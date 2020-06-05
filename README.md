@@ -8,6 +8,7 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
 1. `$ pip install beautifulsoup4, selenium, obs-websocket-py`
 1. [chromedriver](http://chromedriver.chromium.org/downloads) をダウンロード
 1. このリポジトリをgit clone
+1. このリポジトリ同梱のconfig.iniの\[selenium]を設定
 
 # OBSの準備
 1. OBS起動
@@ -15,7 +16,8 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
     1. 「title」「artist」はそれぞれ曲名とアーティスト名の表示欄になる
     1. 「standby」は初期化時の準備状態を表すテキスト。お好みで「準備中」とか書いといて
 1. 「title」「artist」に「scroll」という名前でスクロールのフィルターを作る
-1. このリポジトリ同梱のconfig.iniを各自書き換える
+1. このリポジトリ同梱のconfig.iniの\[sources_config]と\[client]を設定
+1. OBSメニューから「ツール -> Websocket Server Settings」で設定
 
 # 使い方
 1. `$ cd obs-kubo-python`
