@@ -18,8 +18,11 @@ class OBScontroller():
         self.artist_limit_length = int(config["sources_config"]["artist_limit_length"])
         scroll_speed = float(config["sources_config"]["scroll_speed"])
 
-        self.scroll_true = {'cx': cx_title, 'limit_cx': True, 'limit_cy': False, 'speed_x': scroll_speed}
-        self.scroll_false = {'cx': cx_artist, 'limit_cx': False, 'limit_cy': False, 'speed_x': 0.0}
+        self.scroll_t_true = {'cx': cx_title, 'limit_cx': True, 'limit_cy': False, 'speed_x': scroll_speed}
+        self.scroll_t_false = {'cx': cx_title, 'limit_cx': False, 'limit_cy': False, 'speed_x': 0.0}
+
+        self.scroll_a_true = {'cx': cx_artist, 'limit_cx': True, 'limit_cy': False, 'speed_x': scroll_speed}
+        self.scroll_a_false = {'cx': cx_artist, 'limit_cx': False, 'limit_cy': False, 'speed_x': 0.0}
 
         # OBSに接続
         self.ws = obsws(host, port, password)
@@ -30,14 +33,14 @@ class OBScontroller():
             # 一定文字数以上ならスクロールさせる
             if self.get_east_asian_width_count(title) > self.title_limit_length:
                 title = title + "　　"  # 見やすいようにスクロール用のスペースを開ける
-                title_scroll = self.scroll_true
+                title_scroll = self.scroll_t_true
             else:
-                title_scroll = self.scroll_false
+                title_scroll = self.scroll_t_false
             if self.get_east_asian_width_count(artist) > self.artist_limit_length:
                 artist = artist + "　　"  # 見やすいようにスクロール用のスペースを開ける
-                artist_scroll = self.scroll_true
+                artist_scroll = self.scroll_a_true
             else:
-                artist_scroll = self.scroll_false
+                artist_scroll = self.scroll_a_false
 
             # 各種セット
             self.setText("title", title)
@@ -75,8 +78,8 @@ class OBScontroller():
                 # 初期化
                 self.setText("title", "TITLE")
                 self.setText("artist", "ARTIST")
-                self.ws.call(requests.SetSourceFilterSettings("title", "scroll", self.scroll_false))
-                self.ws.call(requests.SetSourceFilterSettings("artist", "scroll", self.scroll_false))
+                self.ws.call(requests.SetSourceFilterSettings("title", "scroll", self.scroll_t_false))
+                self.ws.call(requests.SetSourceFilterSettings("artist", "scroll", self.scroll_a_false))
 
                 self.setVisible("music_info", False)
                 self.setVisible("standby", True)
