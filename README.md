@@ -25,7 +25,7 @@ Mac, Windows
 
 # 使い方
 1. `$ cd obs-kubo-python`
-1. `$ cd python main.py`
+1. `$ python main.py`
 1. `$ 初期化する？(y or n):` -> 「y」
     1. なんか落ちたとかでDJしてる途中から起動した場合は「n」、8へ
 1. KUVOをONにした状態で、rekordboxで何か曲を流す
