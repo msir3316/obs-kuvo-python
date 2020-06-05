@@ -25,7 +25,7 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
 1. `$ cd obs-kubo-python`
 1. `$ cd python main.py`
 1. `$ 初期化する？(y or n):` -> 「y」
-    1. なんか落ちたとかでDJしてる途中から起動した場合は「n」
+    1. なんか落ちたとかでDJしてる途中から起動した場合は「n」、8へ
 1. KUVOをONにした状態で、rekordboxで何か曲を流す
 1. https://kuvo.com/mykuvo/djmix/playlist に新しいプレイリストができるので開く
 1. URLに番号が載ってるので控える
@@ -41,7 +41,7 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
 - Q. SessionNotCreatedExceptionって出た
     - A. 多分使ってるChromeとChromeDriverのバージョンが合ってない。
 - Q. Windowsでよくわからん表示が出る
-    - A. `$ ENTERでリロード, hで伏せる, zで終了:` は出てるはずだからとりあえず機能する。Windowsのことはようわからんへん
+    - A. `$ ENTERでリロード, hで伏せる, zで終了:` は出てるはずだからとりあえず動く。Windowsのことはようわからんへん
 - Q. OBSでソースのロックを切り替えたらInvalid event SceneItemLockChangedって出た
     - A. 最近obs-websocketに更新が入って、obs-websocket.pyがまだ対応していないっぽいので触らないように
     
