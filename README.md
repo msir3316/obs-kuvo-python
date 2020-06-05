@@ -40,3 +40,5 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
     - A. 多分使ってるChromeとChromeDriverのバージョンが合ってない。
 - Q. Windowsでよくわからん表示が出る
     - A. `$ KUVOのプレイリストの番号を入力:` は出てるはずだからとりあえず機能する。わしWindowsのことはようわからんへん
+- Q. OBSでソースのロックを切り替えたらInvalid event SceneItemLockChangedって出た
+    - A. 最近obs-websocketに更新が入って、obs-websocket.pyがまだ対応していないっぽいので触らないように
