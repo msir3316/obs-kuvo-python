@@ -34,3 +34,9 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
 - 何も入力せずにENTERでリロード
 - 「h」で「???」と表示する。隠したいときなどに。ご活用ください
 - 「z」で終了、OBSとの接続を切ります
+
+# FAQ
+- Q. SessionNotCreatedExceptionって出た
+    - A. 多分使ってるChromeとChromeDriverのバージョンが合ってない。
+- Q. Windowsでよくわからん表示が出る
+    - A. `$ KUVOのプレイリストの番号を入力:` は出てるはずだからとりあえず機能する。わしWindowsのことはようわからんへん
