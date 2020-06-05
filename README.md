@@ -45,7 +45,7 @@ Mac, Windows
 - Q. Windowsでよくわからん表示が出る
     - A. `$ ENTERでリロード, hで伏せる, zで終了:` は出てるはずだからとりあえず動く。Windowsのことはようわからんへん
 - Q. OBSでソースのロックを切り替えたらInvalid event SceneItemLockChangedって出た
-    - A. 最近obs-websocketに更新が入って、obs-websocketpyがまだ対応していないっぽいので触らないように
+    - A. 最近obs-websocketに更新が入って、obs-websocket-pyがまだ対応していないっぽいので触らないように
     
 # 連絡先
 [Twitter](https://twitter.com/msir3316)
