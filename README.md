@@ -2,6 +2,8 @@
 
 obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲の情報を表示するやつ
 
+<img src="./assets/example.png" width="800px" alt="使用例" />
+
 # 環境構築
 1. OBSに [obs-websocket](https://github.com/Palakis/obs-websocket/) をインストール
 1. Python 3系をインストール
@@ -42,3 +44,6 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
     - A. `$ KUVOのプレイリストの番号を入力:` は出てるはずだからとりあえず機能する。わしWindowsのことはようわからんへん
 - Q. OBSでソースのロックを切り替えたらInvalid event SceneItemLockChangedって出た
     - A. 最近obs-websocketに更新が入って、obs-websocket.pyがまだ対応していないっぽいので触らないように
+    
+# 連絡先
+[Twitter](https://twitter.com/msir3316)
