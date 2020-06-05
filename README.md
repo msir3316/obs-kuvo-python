@@ -49,3 +49,6 @@ Mac, Windows
     
 # 連絡先
 [Twitter](https://twitter.com/msir3316)
+
+# 姉妹品
+[obs-kuvo(suzu2464氏制作)](https://github.com/suzu2469/obs-kuvo)
