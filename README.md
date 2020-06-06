@@ -46,6 +46,8 @@ Mac, Windows
     - A. `$ ENTERでリロード, hで伏せる, zで終了:` は出てるはずだからとりあえず動く。Windowsのことはようわからんへん
 - Q. OBSでソースのロックを切り替えたらInvalid event SceneItemLockChangedって出た
     - A. 最近obs-websocketに更新が入って、obs-websocket-pyがまだ対応していないっぽいので触らないように
+- Q. 自動更新しないの？
+    - A. それで想定外の表示とかされるよりかは…という理由で手動更新。秘匿機能(h)とかは手動の方が都合がいいだろうし。
     
 # 連絡先
 [Twitter](https://twitter.com/msir3316)
