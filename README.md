@@ -11,7 +11,7 @@ Mac, Windows
 1. Python 3系をインストール
 1. `$ pip install beautifulsoup4, selenium, obs-websocket-py`
 1. [chromedriver](http://chromedriver.chromium.org/downloads) をダウンロード
-1. このリポジトリをgit clone
+1. このリポジトリをgit clone、またはreleasesからソースをダウンロード
 1. このリポジトリ同梱のconfig.iniの\[selenium]を設定
 
 # OBSの準備
