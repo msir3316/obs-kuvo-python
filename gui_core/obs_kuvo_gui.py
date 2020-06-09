@@ -1,34 +1,63 @@
 import tkinter as tk
 from tkinter import messagebox
 import re
-
+from core import obs_controller
 
 class OBS_KUVO_GUI():
     def __init__(self):
 
         self.root = tk.Tk()
-        self.myapp = MainFrame(master=self.root)
-        self.myapp.master.title("obs-kuvo-python")
-        self.myapp.master.geometry("450x240")
+        # self.myapp = MainFrame(master=self.root)
+        self.root.title("obs-kuvo-python")
+        # self.myapp.master.geometry("450x240")
+
+        self.obs = obs_controller.OBScontroller()
+
+        """
+        番号を入力してアクセスする部分
+        """
+        acccessFrame = tk.Frame(self.root, bd=2)
+        acccessFrame.pack(fill="x")
+
+        # ラベル
+        input_label = tk.Label(acccessFrame, text="KUVOのプレイリスト番号を入力")
+        # input_label.grid(row=0, column=0, sticky=tk.W)
+        input_label.pack(side="left")
+
+        # 入力欄
+        self.kuvonum_input = tk.Entry(acccessFrame, width=10)
+        self.kuvonum_input.pack(side="left", expand=True, fill="x")
+
+        # ボタン
+        button = tk.Button(acccessFrame, text="接続", command=self.kuvo_playlistnum_input)
+        button.pack(side="left")
+
+        """
+        接続してから操作する部分
+        """
+        ctrlFrame = tk.Frame(self.root)
+        ctrlFrame.pack(fill="x")
+
+        standby_button = tk.Button(ctrlFrame, text="初期化", command=self.init_layout)
+        standby_button.pack(side="left")
+
+        ok_button = tk.Button(ctrlFrame, text="準備OK", command=self.standby_ok)
+        ok_button.pack(side="left")
+
+        reload_button = tk.Button(ctrlFrame, text="リロード", command=self.reload)
+        reload_button.pack(side="left")
+
+        hide_button = tk.Button(ctrlFrame, text="隠す", command=self.hide)
+        hide_button.pack(side="left")
 
     def run(self):
-        self.myapp.mainloop()
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.root.mainloop()
 
-
-class MainFrame(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-
-        # ラベルの作成
-        input_label = tk.Label(text="KUVOのプレイリスト番号を入力")
-        input_label.grid(row=0, column=0, padx=5, pady=5)
-
-        self.kuvonum_input = tk.Entry(width=10)
-        self.kuvonum_input.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W + tk.E)
-
-        # ボタンの作成
-        button = tk.Button(text="実行ボタン", command=self.kuvo_playlistnum_input)
-        button.grid(row=0, column=2, padx=5, pady=5)
+    def on_closing(self):
+        if messagebox.askokcancel("終了", "終了しますか？"):
+            self.obs.close()
+            self.root.destroy()
 
     # ボタンがクリックされたら実行
     def kuvo_playlistnum_input(self):
@@ -37,15 +66,26 @@ class MainFrame(tk.Frame):
             return
 
         if re.match("^\d*$", input_value):
-            messagebox.showinfo("入力確認", input_value + "が入力されました。")
+            playlistnum = int(input_value)
+            self.access(playlistnum)
+            # messagebox.showinfo("入力確認", input_value + "が入力されました。")
         else:
             messagebox.showinfo("エラー", "数字のみで入力してください。")
 
-class ObsCtrlFrame(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
+    def access(self, playlistnum):
+        self.obs.access_kuvo(playlistnum)
+        self.obs.show_music_info()
 
-        self.pack()
+    def standby_ok(self):
+        self.obs.standby_ok()
 
-    def create_wedgets(self):
-        pass
+    def init_layout(self):
+        if messagebox.askokcancel("初期化", "初期化しますか？"):
+            self.obs.init_layout()
+
+    def reload(self):
+        self.obs.show_music_info()
+
+    def hide(self):
+        self.obs.hide_music_info()
+

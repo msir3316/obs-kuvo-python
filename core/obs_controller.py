@@ -71,16 +71,18 @@ class OBScontroller():
         return count
 
     def init_layout(self):
-        #画面レイアウトの初期化
+        #画面レイアウトの初期化,準備状態
+
+        self.setVisible("music_info", False)
+
         self.setText("title", "TITLE")
         self.setText("artist", "ARTIST")
         self.ws.call(requests.SetSourceFilterSettings("title", "scroll", self.scroll_t_false))
         self.ws.call(requests.SetSourceFilterSettings("artist", "scroll", self.scroll_a_false))
 
-        self.setVisible("music_info", False)
         self.setVisible("standby", True)
 
-    def standby(self):
+    def standby_ok(self):
         #準備状態解除
         self.setVisible("standby", False)
         self.setVisible("music_info", True)
@@ -89,16 +91,17 @@ class OBScontroller():
         #KUVOにアクセス
         self.kuvo_access = getkuvo.KuvoGetter(playlist_num)
 
-    def get_music_info(self):
-        #情報を取得（アクセスしていない場合、何もしない）
+    def show_music_info(self):
+        # アクセスしていない場合、何もしない
         if self.kuvo_access:
             title, artist = self.kuvo_access.get_music_info()
-            return title, artist
+            self.setMusicInfo(title,artist)
 
     def hide_music_info(self):
         #隠す
         self.setMusicInfo("???","???")
 
     def close(self):
-        self.kuvo_access.close()
+        if self.kuvo_access:
+            self.kuvo_access.close()
         self.ws.disconnect()
