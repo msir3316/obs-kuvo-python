@@ -20,6 +20,7 @@ Mac, Windows
     1. 「title」「artist」はそれぞれ曲名とアーティスト名の表示欄になる
     1. 「standby」は初期化時の準備状態を表すテキスト。お好みで「準備中」とか書いといて
 1. 「title」「artist」に「scroll」という名前でスクロールのフィルターを作る
+1. 上記２つを「music_info」でグループ化
 1. このリポジトリ同梱のconfig.iniの\[sources_config]と\[client]を設定
 1. OBSメニューから「ツール -> Websocket Server Settings」で設定
 
