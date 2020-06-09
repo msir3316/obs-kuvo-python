@@ -16,9 +16,6 @@ Mac, Windows
 1. このリポジトリ同梱のconfig.iniの\[sources_config]と\[client]を設定
 1. OBSメニューから「ツール -> Websocket Server Settings」で設定
 
-# GUIアプリケーションで動かす方法
-準備中…
-
 # リポジトリをクローンして動かす方法
 ## 環境構築
 1. OBSに [obs-websocket](https://github.com/Palakis/obs-websocket/) をインストール
@@ -28,7 +25,7 @@ Mac, Windows
 1. このリポジトリをgit clone、またはreleasesからソースをダウンロード
 1. このリポジトリ同梱のconfig.iniの\[selenium]を設定
 
-## 使い方
+## <a name="jump-how2use">使い方</a>
 1. `$ cd obs-kubo-python`
 1. `$ python main.py`
 1. `$ 初期化する？(y or n):` -> 「y」
@@ -43,6 +40,16 @@ Mac, Windows
 - 何も入力せずにENTERでリロード
 - 「h」で「???」と表示する。隠したいときなどに。ご活用ください
 - 「z」で終了、OBSとの接続を切ります
+
+# GUIアプリケーションで動かす方法
+現在Mac向けのappをリリースしています。Windows用exeはそのうち…
+1. 同梱のconfig.iniを同様に編集
+1. obs-kuvo-pythonを起動
+1. テキストボックスにKUVOのプレイリスト番号を入力し、「接続」を押す
+- 「初期化」ボタンは[使い方](#jump-how2use)の3.に相当
+- 「準備OK」ボタンは7.に相当
+- 後は見た通り
+- 何かあったら`obs-kuvo-python.app/Contents/Resources/log`の中身を私に報告してください。
 
 # FAQ
 - Q. SessionNotCreatedExceptionって出た
