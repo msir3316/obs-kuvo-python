@@ -43,6 +43,7 @@ Mac, Windows
 
 # GUIアプリケーションで動かす方法
 現在Mac向けのappをリリースしています。Windows用exeはそのうち…
+1. chromedriverはやはり別途ダウンロードしてください
 1. 同梱のconfig.iniを同様に編集
 1. obs-kuvo-pythonを起動
 1. テキストボックスにKUVOのプレイリスト番号を入力し、「接続」を押す
