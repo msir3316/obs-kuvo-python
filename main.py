@@ -1,5 +1,6 @@
-from core import obs_controller
+from core import obs_controller_cui
 
-obsctrl = obs_controller.OBScontroller()
+if __name__ == "__main__":
+    obsctrl = obs_controller_cui.OBScontroller()
 
-obsctrl.main()
+    obsctrl.main()
