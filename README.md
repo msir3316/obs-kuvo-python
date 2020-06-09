@@ -67,3 +67,7 @@ Mac, Windows
 
 # 姉妹品
 [obs-kuvo(suzu2464氏制作)](https://github.com/suzu2469/obs-kuvo)
+
+## 自分でビルドしたい方へ
+ここに載せてる情報だけではできないと思うので、各自調べるか、私に連絡を。
+使ったもの：py2app
