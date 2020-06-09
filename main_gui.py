@@ -20,8 +20,7 @@ def mkdir_log():
 
 try:
     app = obs_kuvo_gui.OBS_KUVO_GUI()
-
-    raise Exception
+    app.run()
 except Exception as e:
     print_error()
     exit(1)
