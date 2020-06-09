@@ -4,7 +4,6 @@ from core import configreader
 import unicodedata, os
 
 class OBScontroller():
-    kuvo_access = None
 
     def __init__(self):
         config = configreader.read_config("config.ini")
@@ -70,38 +69,54 @@ class OBScontroller():
                 count += 0.5
         return count
 
-    def init_layout(self):
-        #画面レイアウトの初期化,準備状態
+    def main(self):
+        while True:
+            init_command = input("初期化する？(y or n):")
+            if init_command == "y":
+                # 初期化
+                self.setText("title", "TITLE")
+                self.setText("artist", "ARTIST")
+                self.ws.call(requests.SetSourceFilterSettings("title", "scroll", self.scroll_t_false))
+                self.ws.call(requests.SetSourceFilterSettings("artist", "scroll", self.scroll_a_false))
 
-        self.setVisible("music_info", False)
+                self.setVisible("music_info", False)
+                self.setVisible("standby", True)
 
-        self.setText("title", "TITLE")
-        self.setText("artist", "ARTIST")
-        self.ws.call(requests.SetSourceFilterSettings("title", "scroll", self.scroll_t_false))
-        self.ws.call(requests.SetSourceFilterSettings("artist", "scroll", self.scroll_a_false))
+                while True:
+                    command = input("ENTERで準備状態を解除します。曲を流してください(KUVOのオンを忘れずに):")
+                    if command == "":
+                        self.setVisible("standby", False)
+                        self.setVisible("music_info", True)
+                        break
+                break
+            if init_command == "n":
+                break
 
-        self.setVisible("standby", True)
+        playlist_num = input("KUVOのプレイリストの番号を入力:")
+        kuvo = getkuvo.KuvoGetter(playlist_num)
+        title, artist = kuvo.get_music_info()
 
-    def standby_ok(self):
-        #準備状態解除
-        self.setVisible("standby", False)
-        self.setVisible("music_info", True)
+        # 曲情報をセット
+        self.setMusicInfo(title, artist)
 
-    def access_kuvo(self, playlist_num):
-        #KUVOにアクセス
-        self.kuvo_access = getkuvo.KuvoGetter(playlist_num)
+        # 終了命令来るまでリロードでループさせる
+        while True:
+            command = input("ENTERでリロード, hで伏せる, 「#」を頭につけて任意のコメント, zで終了:")
+            if command == "":
+                kuvo.refresh()
+                title, artist = kuvo.get_music_info()
 
-    def show_music_info(self):
-        # アクセスしていない場合、何もしない
-        if self.kuvo_access:
-            title, artist = self.kuvo_access.get_music_info()
-            self.setMusicInfo(title,artist)
+                self.setMusicInfo(title, artist)
 
-    def hide_music_info(self):
-        #隠す
-        self.setMusicInfo("???","???")
+            elif command == "h":
+                self.setMusicInfo("???", "???")
 
-    def close(self):
-        if self.kuvo_access:
-            self.kuvo_access.close()
+            elif command[0] == "#":
+                comment = command[1:]
+                self.setMusicInfo(comment, " ")
+
+            elif command == "z":
+                kuvo.close()
+                break
+
         self.ws.disconnect()
