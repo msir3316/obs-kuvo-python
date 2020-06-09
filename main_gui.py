@@ -23,4 +23,3 @@ try:
     app.run()
 except Exception as e:
     print_error()
-    exit(1)

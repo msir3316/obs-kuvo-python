@@ -1,7 +1,8 @@
-import configparser, os, errno
+import configparser, os, errno, sys
 
 
-def read_config(config_path):
+def read_config():
+    config_path = "config.ini"
     config_ini = configparser.ConfigParser()
 
     if not os.path.exists(config_path):

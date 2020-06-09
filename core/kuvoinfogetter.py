@@ -7,7 +7,7 @@ from core import configreader
 class KuvoGetter():
 
     def __init__(self, playlist_num):
-        config = configreader.read_config("config.ini")
+        config = configreader.read_config()
         try:
             target = "https://kuvo.com/playlist/" + str(playlist_num)
             options = Options()
