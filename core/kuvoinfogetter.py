@@ -26,29 +26,29 @@ class KuvoGetter():
         self.driver.close()
 
     def get_music_info(self):
-        try:
-            soup = BeautifulSoup(self.driver.page_source, "html.parser")
-            if soup is None:
-                return None
+        # try:
+        soup = BeautifulSoup(self.driver.page_source, "html.parser")
+        if soup is None:
+            return None
 
-            track = soup.find_all(class_="row on")
+        track = soup.find_all(class_="row on")
 
-            if track:
-                title = track[0].find(class_="title")
-                artist = track[0].find(class_="artist")
+        if track:
+            title = track[0].find(class_="title")
+            artist = track[0].find(class_="artist")
+            return title.get_text(), artist.get_text()
+        else:
+            # row onがないときがたまにある。多分リストの最後に居座ってる
+            tracklist = soup.find_all(class_="row off")
+            if tracklist:
+                title = tracklist[-1].find(class_="title")
+                artist = tracklist[-1].find(class_="artist")
                 return title.get_text(), artist.get_text()
-            else:
-                # row onがないときがたまにある。多分リストの最後に居座ってる
-                tracklist = soup.find_all(class_="row off")
-                if tracklist:
-                    title = tracklist[-1].find(class_="title")
-                    artist = tracklist[-1].find(class_="artist")
-                    return title.get_text(), artist.get_text()
-                return None, None
+            return None, None
 
-        except Exception as e:
-            traceback.print_exc()
-            return "!!Error Occurred!!", "!!エラーが発生しました!!"
+        # except Exception as e:
+        #     traceback.print_exc()
+        #     return "!!Error Occurred!!", "!!エラーが発生しました!!"
 
 
 

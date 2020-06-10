@@ -2,6 +2,14 @@ import configparser, os, errno, sys
 
 
 def read_config():
+    # if os.name == "posix":  # Linux, Mac
+    #     LiPath = sys.executable.split('/')
+    #     sPath = '/'.join(LiPath[:-4])
+    #     config_path = sPath + "/config.ini"
+    # else:
+    """
+    ビルド用
+    """
     config_path = "config.ini"
     config_ini = configparser.ConfigParser()
 

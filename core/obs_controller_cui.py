@@ -6,7 +6,7 @@ import unicodedata, os
 class OBScontroller():
 
     def __init__(self):
-        config = configreader.read_config("config.ini")
+        config = configreader.read_config()
 
         host = config["client"]["host"]
         port = int(config["client"]["port"])
