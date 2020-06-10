@@ -42,6 +42,8 @@ Mac, Windows
 - 「z」で終了、OBSとの接続を切ります
 
 # GUIアプリケーションで動かす方法
+<img src="./assets/app_example.png" width="400px" alt="アプリ使用例" />
+
 1. chromedriverはやはり別途ダウンロードしてください
 1. 同梱のconfig.iniを同様に編集。アプリケーションと同じ階層に置いてください
 1. obs-kuvo-pythonを起動
