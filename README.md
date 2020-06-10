@@ -42,15 +42,16 @@ Mac, Windows
 - 「z」で終了、OBSとの接続を切ります
 
 # GUIアプリケーションで動かす方法
-現在Mac向けのappをリリースしています。Windows用exeはそのうち…
 1. chromedriverはやはり別途ダウンロードしてください
-1. 同梱のconfig.iniを同様に編集
+1. 同梱のconfig.iniを同様に編集。アプリケーションと同じ階層に置いてください
 1. obs-kuvo-pythonを起動
 1. テキストボックスにKUVOのプレイリスト番号を入力し、「接続」を押す
 - 「初期化」ボタンは[使い方](#jump-how2use)の3.に相当
 - 「準備OK」ボタンは7.に相当
 - 後は見た通り
-- 何かあったら`obs-kuvo-python.app/Contents/Resources/log`の中身を私に報告してください。
+- 何かあったらlogの中身を私に報告してください。
+    - Mac: `obs-kuvo-python.app/Contents/Resources/log`
+    - Windows: 直下にlogができる
 
 # FAQ
 - Q. SessionNotCreatedExceptionって出た
@@ -70,4 +71,4 @@ Mac, Windows
 
 ## 自分でビルドしたい方へ
 ここに載せてる情報だけではできないと思うので、各自調べるか、私に連絡を。
-使ったもの：py2app
+使ったもの：py2app, pyinstaller
