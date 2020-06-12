@@ -7,6 +7,7 @@ obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲
 Mac, Windows
 
 # OBSの準備
+1. OBSに [obs-websocket](https://github.com/Palakis/obs-websocket/) をインストール
 1. OBS起動
 1. 「title」「artist」「standby」のテキストソースを作る
     1. 「title」「artist」はそれぞれ曲名とアーティスト名の表示欄になる
@@ -18,7 +19,6 @@ Mac, Windows
 
 # リポジトリをクローンして動かす方法
 ## 環境構築
-1. OBSに [obs-websocket](https://github.com/Palakis/obs-websocket/) をインストール
 1. Python 3系をインストール
 1. `$ pip install beautifulsoup4, selenium, obs-websocket-py`
 1. [chromedriver](http://chromedriver.chromium.org/downloads) をダウンロード
@@ -42,6 +42,8 @@ Mac, Windows
 - 「z」で終了、OBSとの接続を切ります
 
 # GUIアプリケーションで動かす方法
+<img src="./assets/app_example.png" width="400px" alt="アプリ使用例" />
+
 1. chromedriverはやはり別途ダウンロードしてください
 1. 同梱のconfig.iniを同様に編集。アプリケーションと同じ階層に置いてください
 1. obs-kuvo-pythonを起動
