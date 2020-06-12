@@ -2,15 +2,17 @@ import configparser, os, errno, sys
 
 
 def read_config():
-    # if os.name == "posix":  # Linux, Mac
-    #     LiPath = sys.executable.split('/')
-    #     sPath = '/'.join(LiPath[:-4])
-    #     config_path = sPath + "/config.ini"
-    # else:
-    """
-    ビルド用
-    """
-    config_path = "config.ini"
+    if os.name == "posix":  # Linux, Mac
+        #Mac app用
+        exctbl = sys.executable
+        if "app/Contents" in exctbl:
+            LiPath = exctbl.split('/')
+            sPath = '/'.join(LiPath[:-4])
+            config_path = sPath + "/config.ini"
+        else:
+            config_path = "config.ini"
+    else:
+        config_path = "config.ini"
     config_ini = configparser.ConfigParser()
 
     if not os.path.exists(config_path):

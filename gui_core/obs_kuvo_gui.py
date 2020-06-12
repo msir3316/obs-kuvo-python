@@ -59,7 +59,6 @@ class OBS_KUVO_GUI():
             self.obs.close()
             self.root.destroy()
 
-    # ボタンがクリックされたら実行
     def kuvo_playlistnum_input(self):
         input_value = self.kuvonum_input.get()
         if input_value == "":
@@ -68,7 +67,6 @@ class OBS_KUVO_GUI():
         if re.match("^\d*$", input_value):
             playlistnum = int(input_value)
             self.access(playlistnum)
-            # messagebox.showinfo("入力確認", input_value + "が入力されました。")
         else:
             messagebox.showinfo("エラー", "数字のみで入力してください。")
 
@@ -84,6 +82,7 @@ class OBS_KUVO_GUI():
             self.obs.init_layout()
 
     def reload(self):
+        self.obs.reload()
         self.obs.show_music_info()
 
     def hide(self):

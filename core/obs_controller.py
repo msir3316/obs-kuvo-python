@@ -4,7 +4,6 @@ from core import configreader
 import unicodedata, os
 
 class OBScontroller():
-    kuvo_access = None
 
     def __init__(self):
         config = configreader.read_config()
@@ -28,6 +27,8 @@ class OBScontroller():
         # OBSに接続
         self.ws = obsws(host, port, password)
         self.ws.connect()
+
+        self.kuvo_access = None
 
     def setMusicInfo(self,title, artist):
         if title and artist:
@@ -96,6 +97,10 @@ class OBScontroller():
         if self.kuvo_access:
             title, artist = self.kuvo_access.get_music_info()
             self.setMusicInfo(title,artist)
+
+    def reload(self):
+        if self.kuvo_access:
+            self.kuvo_access.refresh()
 
     def hide_music_info(self):
         #隠す

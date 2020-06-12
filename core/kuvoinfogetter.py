@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from bs4 import BeautifulSoup
-import traceback, os
+import os
 from core import configreader
+from utl import error_logger, my_exception
 
 class KuvoGetter():
 
@@ -11,7 +11,8 @@ class KuvoGetter():
         try:
             target = "https://kuvo.com/playlist/" + str(playlist_num)
             options = Options()
-            if os.name == "nt": # Windows
+            if os.name == "nt":
+                # Windows
                 options.binary_location = config["selenium"]["main_chrome_path"]
             options.add_argument("--headless")
             self.driver = webdriver.Chrome(options=options, executable_path=config["selenium"]["chromedriver_path"])
@@ -26,30 +27,37 @@ class KuvoGetter():
         self.driver.close()
 
     def get_music_info(self):
-        # try:
-        soup = BeautifulSoup(self.driver.page_source, "html.parser")
-        if soup is None:
-            return None
+        try:
+            if self.driver.find_elements_by_xpath("//section[@data-page='notfound']"):
+                raise my_exception.KuvoPageNotFoundException()
 
-        track = soup.find_all(class_="row on")
+            #スペースは「.」と扱われるので注意 ("row on" -> "row.on")
+            row_on = self.driver.find_elements_by_class_name("row.on")
 
-        if track:
-            title = track[0].find(class_="title")
-            artist = track[0].find(class_="artist")
-            return title.get_text(), artist.get_text()
-        else:
-            # row onがないときがたまにある。多分リストの最後に居座ってる
-            tracklist = soup.find_all(class_="row off")
-            if tracklist:
-                title = tracklist[-1].find(class_="title")
-                artist = tracklist[-1].find(class_="artist")
-                return title.get_text(), artist.get_text()
-            return None, None
+            if row_on:
+                title = row_on[0].find_element_by_class_name("title")
+                artist = row_on[0].find_element_by_class_name("artist")
+                return title.text, artist.text
+            else:
+                # 「row on」がないときがたまにある。多分リストの最後に居座ってる
+                row_off = self.driver.find_elements_by_class_name("row.off")
+                print(row_off)
+                if row_off:
+                    title = row_off[-1].find_element_by_class_name("title")
+                    artist = row_off[-1].find_element_by_class_name("artist")
+                    return title.text, artist.text
+                else:
+                    raise my_exception.TrackInfoNotFoundException("トラック情報を取得できませんでした")
 
-        # except Exception as e:
-        #     traceback.print_exc()
-        #     return "!!Error Occurred!!", "!!エラーが発生しました!!"
+        except my_exception.TrackInfoNotFoundException:
+            return "[!]Track Infomation Not Found", "[!]トラック情報を取得できませんでした"
 
+        except my_exception.KuvoPageNotFoundException:
+            return "[!]KUVO Playlist Not Found", "[!]指定したプレイリストは存在しません"
+
+        except Exception:
+            error_logger.print_error("kuvo")
+            return "[!]Error Occurred", "[!]エラーが発生しました"
 
 
 
