@@ -34,7 +34,7 @@ Mac OS X Catalina, Windows 10
 <img src="./assets/app_example.png" width="400px" alt="アプリ使用例" />
 
 1. [chromedriver](http://chromedriver.chromium.org/downloads) を別途ダウンロード
-1. 同梱のconfig.iniの\[selenium]の欄を編集、ダウンロードしたドライバのパス等を記述
+1. 本ツール同梱のconfig.iniの\[selenium]の欄を編集、ダウンロードしたドライバのパス等を記述
 1. OBSを起動、Websocketサーバを有効にする
 1. obs-kuvo-pythonを起動
 1. rekordboxにて、KUVOのLive PlaylistをSTARTし、何か曲を流す
