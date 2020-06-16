@@ -33,6 +33,7 @@ Mac OS X Catalina, Windows 10
 # 使い方
 <img src="./assets/app_example.png" width="400px" alt="アプリ使用例" />
 
+1. [本ツール](https://github.com/msir3316/obs-kuvo-python/releases)をダウンロード
 1. [chromedriver](http://chromedriver.chromium.org/downloads) を別途ダウンロード
 1. 本ツール同梱のconfig.iniの\[selenium]の欄を編集、ダウンロードしたドライバのパス等を記述
 1. OBSを起動、Websocketサーバを有効にする
