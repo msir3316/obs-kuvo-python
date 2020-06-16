@@ -29,7 +29,11 @@ class OBScontroller():
         self.ws.connect()
 
     def setMusicInfo(self,title, artist):
-        if title and artist:
+        if title is not None and artist is not None:
+            if title == "":
+                title = " "
+            if artist == "":
+                artist = " "
             # 一定文字数以上ならスクロールさせる
             if self.get_east_asian_width_count(title) > self.title_limit_length:
                 title = title + "　　"  # 見やすいようにスクロール用のスペースを開ける
