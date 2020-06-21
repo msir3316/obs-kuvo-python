@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import re
 from core import obs_controller
+import obswebsocket.exceptions
+from utl import my_exception, error_logger
 
 class OBS_KUVO_GUI():
     def __init__(self):
@@ -11,7 +13,11 @@ class OBS_KUVO_GUI():
         self.root.title("obs-kuvo-python")
         # self.myapp.master.geometry("450x240")
 
-        self.obs = obs_controller.OBScontroller()
+        try:
+            self.obs = obs_controller.OBScontroller()
+        except obswebsocket.exceptions.ConnectionFailure:
+            self.noteOBSconnection()
+            exit()
 
         """
         番号を入力してアクセスする部分
@@ -68,11 +74,19 @@ class OBS_KUVO_GUI():
             playlistnum = int(input_value)
             self.access(playlistnum)
         else:
-            messagebox.showinfo("エラー", "数字のみで入力してください。")
+            messagebox.showerror("エラー", "数字のみで入力してください。")
 
     def access(self, playlistnum):
         self.obs.access_kuvo(playlistnum)
-        self.obs.show_music_info()
+        try:
+            self.obs.show_music_info()
+        except my_exception.KuvoPageNotFoundException:
+            self.playlistNotFound()
+        except my_exception.TrackInfoNotFoundException:
+            self.trackNotFound()
+        except Exception:
+            error_logger.print_error("kuvo")
+            self.showError()
 
     def standby_ok(self):
         self.obs.standby_ok()
@@ -83,8 +97,33 @@ class OBS_KUVO_GUI():
 
     def reload(self):
         self.obs.reload()
-        self.obs.show_music_info()
+        try:
+            self.obs.show_music_info()
+        except my_exception.KuvoPageNotFoundException:
+            self.playlistNotFound()
+        except my_exception.TrackInfoNotFoundException:
+            self.trackNotFound()
+        except Exception:
+            error_logger.print_error("kuvo")
+            self.showError()
 
     def hide(self):
         self.obs.hide_music_info()
 
+
+    """
+    エラー周りのメッセージボックス
+    """
+    def noteOBSconnection(self):
+        messagebox.showerror("エラー", "OBSとの接続に失敗しました。以下を確認してください。\n"
+                                   "\n・先にOBSを起動し、websocketサーバを有効にしているか"
+                                   "\n・websocketサーバとconfig.iniのパスワード等の記述が正しいか")
+
+    def playlistNotFound(self):
+        messagebox.showerror("エラー","指定したKUVOのプレイリストは存在しません。")
+
+    def trackNotFound(self):
+        messagebox.showerror("エラー","トラック情報を取得することができませんでした。")
+
+    def showError(self):
+        messagebox.showerror("エラー","予期しないエラーが発生しました。詳細はログを確認してください。")

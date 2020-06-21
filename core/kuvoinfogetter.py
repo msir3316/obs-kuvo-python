@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os
 from core import configreader
-from utl import error_logger, my_exception
+from utl import my_exception
 
 class KuvoGetter():
 
@@ -27,37 +27,26 @@ class KuvoGetter():
         self.driver.close()
 
     def get_music_info(self):
-        try:
-            if self.driver.find_elements_by_xpath("//section[@data-page='notfound']"):
-                raise my_exception.KuvoPageNotFoundException()
+        if self.driver.find_elements_by_xpath("//section[@data-page='notfound']"):
+            raise my_exception.KuvoPageNotFoundException()
 
-            #スペースは「.」と扱われるので注意 ("row on" -> "row.on")
-            row_on = self.driver.find_elements_by_class_name("row.on")
+        #スペースは「.」と扱われるので注意 ("row on" -> "row.on")
+        row_on = self.driver.find_elements_by_class_name("row.on")
 
-            if row_on:
-                title = row_on[0].find_element_by_class_name("title")
-                artist = row_on[0].find_element_by_class_name("artist")
+        if row_on:
+            title = row_on[0].find_element_by_class_name("title")
+            artist = row_on[0].find_element_by_class_name("artist")
+            return title.text, artist.text
+        else:
+            # 「row on」がないときがたまにある。多分リストの最後に居座ってる
+            row_off = self.driver.find_elements_by_class_name("row.off")
+            print(row_off)
+            if row_off:
+                title = row_off[-1].find_element_by_class_name("title")
+                artist = row_off[-1].find_element_by_class_name("artist")
                 return title.text, artist.text
             else:
-                # 「row on」がないときがたまにある。多分リストの最後に居座ってる
-                row_off = self.driver.find_elements_by_class_name("row.off")
-                print(row_off)
-                if row_off:
-                    title = row_off[-1].find_element_by_class_name("title")
-                    artist = row_off[-1].find_element_by_class_name("artist")
-                    return title.text, artist.text
-                else:
-                    raise my_exception.TrackInfoNotFoundException("トラック情報を取得できませんでした")
-
-        except my_exception.TrackInfoNotFoundException:
-            return "[!]Track Infomation Not Found", "[!]トラック情報を取得できませんでした"
-
-        except my_exception.KuvoPageNotFoundException:
-            return "[!]KUVO Playlist Not Found", "[!]指定したプレイリストは存在しません"
-
-        except Exception:
-            error_logger.print_error("kuvo")
-            return "[!]Error Occurred", "[!]エラーが発生しました"
+                raise my_exception.TrackInfoNotFoundException("トラック情報を取得できませんでした")
 
 
 
