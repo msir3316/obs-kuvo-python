@@ -3,7 +3,7 @@ from tkinter import messagebox
 import re, pyperclip
 from core import obs_controller, kuvoinfogetter
 import obswebsocket.exceptions
-from utl import my_exception, error_logger
+from utl import my_exception
 
 app_version = "v1.1.0dev"
 

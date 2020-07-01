@@ -1,6 +1,6 @@
 from obswebsocket import obsws, requests
 from core import configreader
-import unicodedata, os
+import unicodedata
 
 class OBScontroller():
 
