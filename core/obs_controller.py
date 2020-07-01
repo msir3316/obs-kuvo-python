@@ -1,7 +1,7 @@
 from obswebsocket import obsws, requests
 import core.kuvoinfogetter as getkuvo
 from core import configreader
-import unicodedata, os
+import unicodedata, os, pyperclip
 
 class OBScontroller():
 
@@ -96,11 +96,23 @@ class OBScontroller():
         #KUVOにアクセス
         self.kuvo_access = getkuvo.KuvoGetter(playlist_num)
 
-    def show_music_info(self):
+    def show_music_info(self, cb):
         # アクセスしていない場合、何もしない
         if self.kuvo_access:
             title, artist = self.kuvo_access.get_music_info()
             self.setMusicInfo(title,artist)
+            if cb.get_clipboard_enable():
+                self.copy_to_clipboard(title, artist)
+
+    def copy_to_clipboard(self, title, artist):
+        """
+        クリップボードに情報をコピー。OBS以外の用途用
+        少なくとも曲名がないなんてことはないはずなのでtitleは未処理
+        """
+        if artist == "":
+            pyperclip.copy("♪ {}".format(title))
+        else:
+            pyperclip.copy("♪ {} - {}".format(title, artist))
 
     def reload(self):
         if self.kuvo_access:
