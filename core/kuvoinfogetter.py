@@ -6,19 +6,19 @@ from utl import my_exception
 
 class KuvoGetter():
 
-    def __init__(self, playlist_num):
+    def __init__(self):
         config = configreader.read_config()
-        try:
-            target = "https://kuvo.com/playlist/" + str(playlist_num)
-            options = Options()
-            if os.name == "nt":
-                # Windows
-                options.binary_location = config["selenium"]["main_chrome_path"]
-            options.add_argument("--headless")
-            self.driver = webdriver.Chrome(options=options, executable_path=config["selenium"]["chromedriver_path"])
-            self.driver.get(target)
-        except Exception as e:
-            print(e.with_traceback)
+
+        options = Options()
+        if os.name == "nt":
+            # Windows
+            options.binary_location = config["selenium"]["main_chrome_path"]
+        options.add_argument("--headless")
+        self.driver = webdriver.Chrome(options=options, executable_path=config["selenium"]["chromedriver_path"])
+
+    def access(self, playlist_num):
+        target = "https://kuvo.com/playlist/" + str(playlist_num)
+        self.driver.get(target)
 
     def refresh(self):
         self.driver.refresh()

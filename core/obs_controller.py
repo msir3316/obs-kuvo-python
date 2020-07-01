@@ -1,12 +1,13 @@
 from obswebsocket import obsws, requests
-import core.kuvoinfogetter as getkuvo
 from core import configreader
-import unicodedata, os, pyperclip
+import unicodedata, os
 
 class OBScontroller():
 
     def __init__(self):
         config = configreader.read_config()
+
+        self.server_os = config["client"]["server_os"]
 
         host = config["client"]["host"]
         port = int(config["client"]["port"])
@@ -28,7 +29,7 @@ class OBScontroller():
         self.ws = obsws(host, port, password)
         self.ws.connect()
 
-        self.kuvo_access = None
+        # self.kuvo_access = None
 
     def setMusicInfo(self,title, artist):
         if title is not None and artist is not None:
@@ -56,9 +57,9 @@ class OBScontroller():
 
     def setText(self, sourcename, text):
         # OS判別してGDI+かFreetype2か変わる
-        if os.name == "nt":  # Windows
+        if self.server_os == "Windows":
             self.ws.call(requests.SetTextGDIPlusProperties(sourcename, text=text))
-        elif os.name == "posix":  # Mac, Linux
+        elif self.server_os == "Mac":
             self.ws.call(requests.SetTextFreetype2Properties(sourcename, text=text))
 
     # 表示非表示切り替え
@@ -92,37 +93,9 @@ class OBScontroller():
         self.setVisible("standby", False)
         self.setVisible("music_info", True)
 
-    def access_kuvo(self, playlist_num):
-        #KUVOにアクセス
-        self.kuvo_access = getkuvo.KuvoGetter(playlist_num)
-
-    def show_music_info(self, cb):
-        # アクセスしていない場合、何もしない
-        if self.kuvo_access:
-            title, artist = self.kuvo_access.get_music_info()
-            self.setMusicInfo(title,artist)
-            if cb.get_clipboard_enable():
-                self.copy_to_clipboard(title, artist)
-
-    def copy_to_clipboard(self, title, artist):
-        """
-        クリップボードに情報をコピー。OBS以外の用途用
-        少なくとも曲名がないなんてことはないはずなのでtitleは未処理
-        """
-        if artist == "":
-            pyperclip.copy("♪ {}".format(title))
-        else:
-            pyperclip.copy("♪ {} - {}".format(title, artist))
-
-    def reload(self):
-        if self.kuvo_access:
-            self.kuvo_access.refresh()
-
     def hide_music_info(self):
         #隠す
         self.setMusicInfo("???","???")
 
     def close(self):
-        if self.kuvo_access:
-            self.kuvo_access.close()
         self.ws.disconnect()
