@@ -213,8 +213,6 @@ class OBS_KUVO_GUI():
     def hide(self):
         if self.obs:
             self.obs.hide_music_info()
-        else:
-            foo = 1/0
 
     def standby_ok(self):
         if self.obs:
