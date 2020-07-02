@@ -1,3 +1,2 @@
 selenium
 obs-websocket-py
-pyperclip

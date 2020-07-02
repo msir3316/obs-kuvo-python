@@ -1,15 +1,16 @@
 import tkinter as tk
 from tkinter import messagebox
-import re, pyperclip
+import re, traceback
 from core import obs_controller, kuvoinfogetter
 import obswebsocket.exceptions
-from utl import my_exception
+from utl import my_exception, error_logger
+from selenium.common.exceptions import WebDriverException
 
 app_version = "v1.1.0dev"
 
 class OBS_KUVO_GUI():
     def __init__(self):
-
+        tk.Tk.report_callback_exception = report_callback_exception
         self.root = tk.Tk()
         self.root.title("obs-kuvo-python")
 
@@ -27,6 +28,11 @@ class OBS_KUVO_GUI():
 
         obs_button = tk.Button(cnctFrame, text="OBSに接続", command=self.connectOBS)
         obs_button.pack(side="left")
+
+        self.obs_status = tk.StringVar()
+        self.obs_status.set("NOT connected")
+        obs_status_label = tk.Label(cnctFrame, textvariable=self.obs_status)
+        obs_status_label.pack(side="left")
 
         """
         番号を入力してアクセスする部分
@@ -55,15 +61,20 @@ class OBS_KUVO_GUI():
         infoFrame = tk.Frame(self.root)
         infoFrame.pack(fill="x")
 
-        title_label = tk.Label(infoFrame,text="Title")
-        title_label.grid(row=0, column=0)
-        self.title_info = tk.Entry(infoFrame)
-        self.title_info.grid(row=0, column=1, sticky=(tk.W, tk.E))
+        # title_label = tk.Label(infoFrame,text="Title")
+        # title_label.grid(row=0, column=0)
+        # self.title_info = tk.Entry(infoFrame, width=50)
+        # self.title_info.grid(row=0, column=1, sticky=(tk.W, tk.E))
+        #
+        # artist_label = tk.Label(infoFrame, text="Artist")
+        # artist_label.grid(row=1, column=0)
+        # self.artist_info = tk.Entry(infoFrame, width=50)
+        # self.artist_info.grid(row=1, column=1, sticky=(tk.W, tk.E))
 
-        artist_label = tk.Label(infoFrame, text="Artist")
-        artist_label.grid(row=1, column=0)
-        self.artist_info = tk.Entry(infoFrame)
-        self.artist_info.grid(row=1, column=1, sticky=(tk.W, tk.E))
+        cppa_label = tk.Label(infoFrame, text="曲情報")
+        cppa_label.pack(side="left")
+        self.cppa_text = tk.Entry(infoFrame, width=50)
+        self.cppa_text.pack(side="left", expand=True, fill="x")
 
         """
         接続してから操作する部分
@@ -86,14 +97,15 @@ class OBS_KUVO_GUI():
         """
         追加機能部分
         """
-        additionalFrame = tk.Frame(self.root)
-        additionalFrame.pack(fill="x")
+        # additionalFrame = tk.Frame(self.root)
+        # additionalFrame.pack(fill="x")
 
         #チェックボックス用の状態はこちらで指定
-        self.clpbd_bln = tk.BooleanVar()
-        self.clpbd_bln.set(False)
-        clipboard_check = tk.Checkbutton(additionalFrame, text="取得時にクリップボードにコピー", variable=self.clpbd_bln)
-        clipboard_check.pack(side="left")
+        # self.clpbd_bln = tk.BooleanVar()
+        # self.clpbd_bln.set(True)
+        # clipboard_check = tk.Checkbutton(additionalFrame, text="取得時にクリップボードにコピー", variable=self.clpbd_bln)
+        # clipboard_check.pack(side="left")
+
 
     def run(self):
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -107,8 +119,8 @@ class OBS_KUVO_GUI():
                 self.kuvo.close()
             self.root.destroy()
 
-    def get_clipboard_enable(self):
-        return self.clpbd_bln.get()
+    # def get_clipboard_enable(self):
+    #     return self.clpbd_bln.get()
 
     def kuvo_playlistnum_input(self):
         input_value = self.kuvonum_input.get()
@@ -126,18 +138,30 @@ class OBS_KUVO_GUI():
     """
     def connectOBS(self):
         try:
-            self.obs = obs_controller.OBScontroller()
+            self.obs = obs_controller.OBScontroller(self)
             self.noteOBSconnectionSuccessful()
+            self.obs_status.set("connecting")
         except obswebsocket.exceptions.ConnectionFailure:
             self.noteOBSconnection()
 
+    """
+    OBSが終了したとき
+    """
+    def exitedOBS(self):
+        tk.messagebox.showwarning("OBSの終了", "OBSとの接続が切れました。")
+        self.obs = None
+        self.obs_status.set("NOT connected")
 
     """
     selenium起動、ページにアクセス
     """
     def access(self, playlistnum):
         if self.kuvo is None:
-            self.kuvo = kuvoinfogetter.KuvoGetter()
+            try:
+                self.kuvo = kuvoinfogetter.KuvoGetter()
+            except WebDriverException:
+                self.noteSeleniumException()
+                return
         self.kuvo.access(playlistnum)
         self.music_info()
 
@@ -150,8 +174,8 @@ class OBS_KUVO_GUI():
             self.show_music_info(title,artist)
             if self.obs:
                 self.obs.setMusicInfo(title, artist)
-            if self.get_clipboard_enable():
-                self.copy_to_clipboard(title, artist)
+            # if self.get_clipboard_enable():
+            #     self.copy_to_clipboard(title, artist)
 
         except my_exception.KuvoPageNotFoundException:
             self.playlistNotFound()
@@ -162,10 +186,17 @@ class OBS_KUVO_GUI():
     テキストボックスに取得した情報の表示
     """
     def show_music_info(self, title, artist):
-        self.title_info.delete(0, tk.END)
-        self.title_info.insert(0, title)
-        self.artist_info.delete(0, tk.END)
-        self.artist_info.insert(0, artist)
+        # self.title_info.delete(0, tk.END)
+        # self.title_info.insert(0, title)
+        # self.artist_info.delete(0, tk.END)
+        # self.artist_info.insert(0, artist)
+        if artist == "":
+            text = "♪ {}".format(title)
+        else:
+            text = "♪ {} - {}".format(title, artist)
+
+        self.cppa_text.delete(0, tk.END)
+        self.cppa_text.insert(0, text)
 
     """
     リロード
@@ -182,6 +213,8 @@ class OBS_KUVO_GUI():
     def hide(self):
         if self.obs:
             self.obs.hide_music_info()
+        else:
+            foo = 1/0
 
     def standby_ok(self):
         if self.obs:
@@ -195,15 +228,19 @@ class OBS_KUVO_GUI():
     """
     クリップボードにコピー
     """
-    def copy_to_clipboard(self, title, artist):
-        """
-        クリップボードに情報をコピー。OBS以外の用途
-        少なくとも曲名がないなんてことはないはずなのでtitleは未処理
-        """
-        if artist == "":
-            pyperclip.copy("♪ {}".format(title))
-        else:
-            pyperclip.copy("♪ {} - {}".format(title, artist))
+    # def copy_to_clipboard(self, title, artist):
+    #     """
+    #     クリップボードに情報をコピー。OBS以外の用途
+    #     少なくとも曲名がないなんてことはないはずなのでtitleは未処理
+    #     """
+    #     # try:
+    #     #     pyperclip.init_osx_pyobjc_clipboard()
+    #     #     if artist == "":
+    #     #         pyperclip.copy("♪ {}".format(title))
+    #     #     else:
+    #     #         pyperclip.copy("♪ {} - {}".format(title, artist))
+    #     # except Exception:
+    #     #     error_logger.print_error("clip")
 
 
     """
@@ -221,7 +258,25 @@ class OBS_KUVO_GUI():
                                    "\n・websocketサーバとconfig.iniのパスワード等の記述が正しいか")
 
     def playlistNotFound(self):
-        messagebox.showerror("エラー","指定したKUVOのプレイリストは存在しません。")
+        messagebox.showerror("エラー", "指定したKUVOのプレイリストは存在しません。")
 
     def trackNotFound(self):
-        messagebox.showerror("エラー","トラック情報を取得することができませんでした。")
+        messagebox.showerror("エラー", "トラック情報を取得することができませんでした。")
+
+    def noteSeleniumException(self):
+        messagebox.showerror("エラー", "接続に失敗しました。config.iniの設定が正しいか確認してください。")
+
+    # def showError(self):
+    #     messagebox.showerror("エラー", "予期しないエラーが発生しました。詳細はログを確認してください。")
+
+"""
+その他の例外処理
+"""
+
+def showError():
+    messagebox.showerror("エラー", "予期しないエラーが発生しました。詳細はログを確認してください。")
+
+def report_callback_exception(self, exc, val, tb):
+    error_logger.print_error("app")
+    showError()
+    exit()

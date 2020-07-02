@@ -1,11 +1,13 @@
-from obswebsocket import obsws, requests
+from obswebsocket import obsws, requests, events
 from core import configreader
 import unicodedata
 
 class OBScontroller():
 
-    def __init__(self):
+    def __init__(self, app):
         config = configreader.read_config()
+
+        self.app = app
 
         self.server_os = config["client"]["server_os"]
 
@@ -29,7 +31,8 @@ class OBScontroller():
         self.ws = obsws(host, port, password)
         self.ws.connect()
 
-        # self.kuvo_access = None
+        #OBSを終了したときのイベントを検出できるようにする
+        self.ws.register(self.on_exiting, events.Exiting)
 
     def setMusicInfo(self,title, artist):
         if title is not None and artist is not None:
@@ -99,3 +102,8 @@ class OBScontroller():
 
     def close(self):
         self.ws.disconnect()
+
+
+    #OBSを終了したときのイベント
+    def on_exiting(self,message):
+        self.app.exitedOBS()
