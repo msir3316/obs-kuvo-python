@@ -6,7 +6,7 @@ import obswebsocket.exceptions
 from utl import my_exception, error_logger
 from selenium.common.exceptions import WebDriverException
 
-app_version = "v1.1.0dev"
+app_version = "v1.1.0"
 
 class OBS_KUVO_GUI():
     def __init__(self):
