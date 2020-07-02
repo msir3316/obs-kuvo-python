@@ -31,21 +31,29 @@ Mac OS X Catalina, Windows 10
 
 <a id="how2use"></a>
 # 使い方
-<img src="./assets/app_example.png" width="400px" alt="アプリ使用例" />
+<img src="./assets/app_example_v110.png" width="400px" alt="アプリ使用例" />
 
 1. [本ツール](https://github.com/msir3316/obs-kuvo-python/releases)をダウンロード
 1. [chromedriver](http://chromedriver.chromium.org/downloads) を別途ダウンロード
 1. 本ツール同梱のconfig.iniの\[selenium]の欄を編集、ダウンロードしたドライバのパス等を記述
 1. OBSを起動、Websocketサーバを有効にする
 1. obs-kuvo-pythonを起動
+1. ①にて、「OBSに接続」を押す
 1. rekordboxにて、KUVOのLive PlaylistをSTARTし、何か曲を流す
 1. https://kuvo.com/mykuvo/djmix/playlist に新しいプレイリストができるので開く
 1. URLに番号が載ってるので控える
-1. テキストボックスにKUVOのプレイリスト番号を入力し、「接続」を押す
-- 「初期化」ボタン: OBSで作った「standby」を表示、「music_info」を非表示。このとき「title」「artist」の内容が初期化される
-- 「準備OK」ボタン: 「standby」を非表示、「music_info」を表示
-- 「リロード」ボタン: KUVOのページを再読み込みして、曲情報を更新
-- 「隠す」ボタン: 「???」と表示する。隠したいときなどに。ご活用ください
+1. ②にて、テキストボックスにKUVOのプレイリスト番号を入力し、「接続」を押す
+
+- ①: OBSに接続するボタンと、接続状況を表示する欄です。
+    - 「OBSに接続」: OBSに接続します。config.iniで正しく設定したか確認してから行ってください。
+- ②: KUVOのプレイリスト番号を入力し、プレイリストページにアクセスして曲情報を取得するエリアです。
+    - 「接続」: 入力した番号のプレイリストにアクセスします。
+    - 「リロード」: KUVOのページを再読み込みして、曲情報を更新
+- ③: 読み込まれた曲情報がここに表示されます。
+- ④: OBSを操作するボタン群です。
+    - 「初期化」: OBSで作った「standby」を表示、「music_info」を非表示。このとき「title」「artist」の内容が初期化される
+    - 「準備OK」: 「standby」を非表示、「music_info」を表示
+    - 「隠す」: 「???」と表示する。隠したいときなどに。ご活用ください
 
 何かあったらlogの中身を私に報告してください。Macの場合: `obs-kuvo-python.app/Contents/Resources/log`
 
