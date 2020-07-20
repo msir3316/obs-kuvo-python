@@ -89,6 +89,8 @@ Mac OS X Catalina, Windows 10
 
 <a id="faq"></a>
 # FAQ
+- Q. 普通にプレイリストのページをブラウザソースで持ってくればよくね？
+    - A. 再生中の曲はリストの一番上に緑色で表示されるのだが、これの更新時間にムラがあるし、再生中の曲を上手く認識できなくなることがあるしでダメだこりゃと思ったのが本ツールを作った理由です。
 - Q. SessionNotCreatedExceptionって出た
     - A. 多分使ってるChromeとChromeDriverのバージョンが合ってない。
 - Q. Windowsでよくわからん表示が出る
