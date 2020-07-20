@@ -1,6 +1,9 @@
 # obs-kuvo-python
 
 obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲の情報を表示するやつ
+
+気まぐれで更新してる。あんまり責任持ちたくないんだ。
+
 <img src="./assets/example.png" width="800px" alt="使用例" />
 
 ## 動作確認済み
