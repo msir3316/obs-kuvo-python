@@ -1,3 +1,8 @@
+# 重要
+当ツールは事実上の開発停止となりました。現在は同様の機能を持ったChrome拡張向けの新しいツールを開発しています。
+
+[obs-kuvo-chromeEX](https://github.com/msir3316/obs-kuvo-chromeEX)
+
 # obs-kuvo-python
 
 obs-websocketとPythonを使って、KUVO経由でrekordboxで流している曲の情報を表示するやつ
